@@ -20,7 +20,14 @@ class NaiveBayes():
     
     def predict_data_point(self, test_data_point):
         
-        p = {variable:{one_class:0 for one_class in self.classes} for variable in list(self.data.keys())}
+        # p = {variable:{one_class:0 for one_class in self.classes} for variable in list(self.data.keys())}
+
+        p = {}
+        for variable in list(self.data.keys()):
+            p_variable = {}
+            for one_class in self.classes:
+                p_variable[one_class] = 0
+            p[variable] = p_variable
         
         for one_class in self.classes:
             
@@ -37,8 +44,8 @@ class NaiveBayes():
             
             p[self.ind_var][one_class] = round(p[self.ind_var][one_class], 3)
         
-        temp = [p[self.ind_var][one_class] for one_class in self.classes]
+        p_class_list = [p[self.ind_var][one_class] for one_class in self.classes]
         
         for one_class in self.classes:
-            if p[self.ind_var][one_class] == max(temp):
+            if p[self.ind_var][one_class] == max(p_class_list):
                 return one_class
