@@ -1,36 +1,29 @@
-from tic_tac_toe import *
+from ttt import *
 from random_player import *
 from input_player import *
+from minimax_player import *
 
-game_options = ['random vs random', 'player vs random', 'random vs player', 'player vs player']
-game_type = game_options[0] # choose here
-players = [RandomPlayer() if elem == 'random' else InputPlayer() for elem in game_type.split(' vs ')]
+game_type = ['random', 'random'] # ['random', 'input', 'minimax']
 
-if game_type == 'random vs random':
+num_wins = {1: 0, 2: 0, 'tie':0}
 
-    # game = TicTacToe(players, second_player_first=False)
-    # game.print_board()
-    # game.complete_round()
-    # game.print_board()
-    # game.run_to_completion()
-    # game.print_board()
+for i in range(100):
     
-    # print("\ngame.round:", game.round)
-    # print("game.winner:", game.winnerm, '\n')
+    players = [RandomPlayer(), RandomPlayer()]
 
-    num_wins = {1: 0, 2: 0, 'Tie':0}
-
-    for i in range(1000):
-        players = [RandomPlayer(), RandomPlayer()]
-        game = TicTacToe(players, second_player_first = (i % 2 == 1))
-        game.run_to_completion()
-        num_wins[game.winner] += 1
-
-    print(num_wins)
-
-else:
-
-    game = TicTacToe(players, second_player_first=False, see_board=True)
+    players = []
+    for player in game_type:
+        if player == 'random':  players.append(RandomPlayer())
+        if player == 'input':   players.append(InputPlayer())
+        if player == 'minimax': players.append(MinimaxPlayer())
+    
+    game = TicTacToe(players, second_player_first = (i % 2 == 1))
     game.run_to_completion()
-    game.print_board()
-    print("\nwinner:", game.winner)
+    num_wins[game.winner] += 1
+
+print(num_wins)
+
+# game = TicTacToe(players, second_player_first=False, see_board=True)
+# game.run_to_completion()
+# game.print_board()
+# print("\nwinner:", game.winner)

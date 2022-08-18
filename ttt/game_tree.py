@@ -61,8 +61,10 @@ class TicTacToeTree():
         
         node.children = children
 
-tree = TicTacToeTree(1)
-tree.build_tree()
+if __name__ == "__main__":
 
-print(tree.num_leaf_nodes)
-print(len(tree.nodes))
+    tree = TicTacToeTree(1)
+    tree.build_tree()
+
+    print(tree.num_leaf_nodes)
+    print(len(tree.nodes))

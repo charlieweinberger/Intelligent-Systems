@@ -1,7 +1,7 @@
 from node import *
-from ttt_tree import *
+from game_tree import *
 
-class Minimax():
+class MinimaxPlayer():
 
     def __init__(self):
         self.tree = TicTacToeTree(1)
@@ -18,7 +18,11 @@ class Minimax():
             if i == 0: self.score_leaf_nodes(parent_nodes)
             else:
 
-                pass
+                current_nodes = parent_nodes.copy()
+                parent_nodes = []
+
+                for node in current_nodes:
+                    pass
     
     def score_leaf_nodes():
 

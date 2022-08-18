@@ -1,3 +1,6 @@
+# convert '000000000' back to [['0', '0', '0'], ['0', '0', '0'], ['0', '0', '0']] everywhere
+# test ttt.py
+
 class TicTacToe:
     def __init__(self, players, second_player_first, see_board=False):
         self.players = players
@@ -6,7 +9,7 @@ class TicTacToe:
         self.set_player_symbols()
         self.set_player_numbers()
         self.determine_player_order()
-        self.board = [[None for _ in range(3)] for _ in range(3)]
+        self.state = '000000000'
         self.round = 1
         self.winner = None
     
@@ -23,20 +26,25 @@ class TicTacToe:
             self.players = self.players[::-1]
 
     def get_possible_moves(self):
-        possible_moves = [(i,j) for i in range(3) for j in range(3) if self.board[i][j] == None]
-        return possible_moves
+        return [i for i in range(9) if self.state[i] == '0']
 
     def complete_round(self):
+
         for player in self.players:
+
             choices = self.get_possible_moves()
+
             if choices != []:
-                player_move = player.choose_move(choices)
-                self.board[player_move[0]][player_move[1]] = player.symbol
-            if self.check_for_winner() != None:
+                move = player.choose_move(choices)
+                self.state = self.state[0:move] + player.symbol + self.state[move + 1:]
+
+            if self.check_for_winner() != '0':
                 self.winner = self.check_for_winner()
                 break
+
             if self.see_board:
                 self.print_board()
+
         self.round += 1
 
     def run_to_completion(self):
@@ -44,32 +52,35 @@ class TicTacToe:
             self.complete_round()
 
     def check_for_winner(self):
-        rows = self.board.copy()
-        cols = [[self.board[i][j] for i in range(3)] for j in range(3)]
-        diags = [[self.board[i][i] for i in range(3)],
-                 [self.board[i][2-i] for i in range(3)]]
+
+        three_in_a_row = [
+            f'{self.state[0]}{self.state[1]}{self.state[2]}',
+            f'{self.state[3]}{self.state[4]}{self.state[5]}',
+            f'{self.state[6]}{self.state[7]}{self.state[8]}',
+            f'{self.state[0]}{self.state[3]}{self.state[6]}',
+            f'{self.state[1]}{self.state[4]}{self.state[7]}',
+            f'{self.state[2]}{self.state[5]}{self.state[8]}',
+            f'{self.state[0]}{self.state[4]}{self.state[8]}',
+            f'{self.state[2]}{self.state[4]}{self.state[6]}'
+        ]
 
         board_full = True
-        for row in rows + cols + diags:
-            if None in row:
+        for row in three_in_a_row:
+            
+            if '0' in row:
                 board_full = False
 
-            for player in self.players:
-                if row == [player.symbol for _ in range(3)]:
-                    return player.number
+            for player in ['1', '2']:
+                if row == 3*player:
+                    return player
         
-        if board_full:
-            return 'Tie'
-        return None
+        return 'tie' if board_full else '0'
 
     def print_board(self):
         print('')
-        for i in range(len(self.board)):
-            row = self.board[i]
+        for i in range(3):
             row_string = ''
-            for space in row:
-                if space == None:
-                    row_string += '_|'
-                else:
-                    row_string += space + '|'
+            for j in range(3):
+                for piece in board_2[3*i + j]:
+                    row_string += ' |' if piece == '0' else f'{piece}|'
             print(row_string[:-1])
