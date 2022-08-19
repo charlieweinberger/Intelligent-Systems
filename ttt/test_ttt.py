@@ -3,14 +3,13 @@ from random_player import *
 from input_player import *
 from minimax_player import *
 
-game_type = ['random', 'random'] # ['random', 'input', 'minimax']
+num_games = 1 # choose this
+game_type = ['minimax', 'random'] # "random", "input", or "minimax"
 
 num_wins = {1: 0, 2: 0, 'tie':0}
 
-for i in range(100):
+for i in range(num_games):
     
-    players = [RandomPlayer(), RandomPlayer()]
-
     players = []
     for player in game_type:
         if player == 'random':  players.append(RandomPlayer())
@@ -23,7 +22,7 @@ for i in range(100):
 
 print(num_wins)
 
-# game = TicTacToe(players, second_player_first=False, see_board=True)
+# game = TicTacToe([RandomPlayer(), InputPlayer()], second_player_first=False, see_board=True)
 # game.run_to_completion()
 # game.print_board()
 # print("\nwinner:", game.winner)

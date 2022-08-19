@@ -1,3 +1,7 @@
+# be more clear with input()
+# if input v random, say what random's move is
+# if input v input, display the board before you first move, and say which turn you are
+
 class InputPlayer():
     
     def __init__(self):
