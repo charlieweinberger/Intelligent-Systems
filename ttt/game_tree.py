@@ -10,7 +10,6 @@ class Node():
         self.previous = []
         self.children = []
         self.score = None
-        self.added_coord = None
     
     def check_for_winner(self):
 
@@ -63,31 +62,20 @@ class ReducedTicTacToeTree():
     def __init__(self, root_state, player_number):
         self.root = Node(root_state, 1, player_number)
         self.player_number = player_number
-        self.num_leaf_nodes = 0
-        self.current_nodes = [self.root]
         self.all_nodes = {str(self.root.state):self.root}
 
     def build_tree(self):
-
-        while len(self.current_nodes) != 0:
-
+        current_nodes = [self.root]
+        while len(current_nodes) != 0:
             all_children = []
-            
-            for node in self.current_nodes:
-            
+            for node in current_nodes:
                 self.create_children(node)
                 all_children += node.children
-            
-                if len(node.children) == 0:
-                    self.num_leaf_nodes += 1
-            
-            self.current_nodes = all_children
-
-        self.current_nodes = [self.root]
+            current_nodes = all_children
 
     def create_children(self, node):
 
-        if node.winner and node.children:
+        if node.winner or node.children:
             return
 
         children = []
@@ -115,5 +103,4 @@ if __name__ == "__main__":
     tree = ReducedTicTacToeTree([[None for _ in range(3)] for _ in range(3)], 1)
     tree.build_tree()
 
-    print(len(list(tree.all_nodes.keys()))) # 5,478 or something similar 
-    print(tree.num_leaf_nodes) # 255,168
+    print(len(list(tree.all_nodes.keys())))

@@ -26,13 +26,3 @@ class MinimaxPlayer():
                     for j in range(3):
                         if self.game.root.state[i][j] != child.state[i][j]:
                             return (i, j)
-
-if __name__ == "__main__":
-
-    tree = ReducedTicTacToeTree([[None for _ in range(3)] for _ in range(3)], 1)
-    tree.build_tree()
-
-    old_state = [[1, 2, 1], [2, None, 1], [2, 1, 2]]
-    new_state = [[1, 2, 1], [2, 1, 1], [2, 1, 2]]
-    node = tree.all_nodes[str(old_state)]
-    print(tree.get_move_from_states(old_state, new_state))
