@@ -1,40 +1,38 @@
-from node import *
 from game_tree import *
 
 class MinimaxPlayer():
 
     def __init__(self):
-        self.tree = TicTacToeTree(1)
-        self.tree.build_tree()
-        
-    def score_nodes():
-
-        i = 0
-        current_nodes = []
-        parent_nodes = []
-
-        while self.tree.root.score == '':
-            
-            if i == 0: self.score_leaf_nodes(parent_nodes)
-            else:
-
-                current_nodes = parent_nodes.copy()
-                parent_nodes = []
-
-                for node in current_nodes:
-                    pass
+        self.player_number = None
     
-    def score_leaf_nodes():
+    def set_player_number(self, player_number):
+        self.player_number = player_number
+        self.game = ReducedTicTacToeTree([[None for _ in range(3)] for _ in range(3)], self.player_number)
+        self.game.build_tree()
+        self.game.root.set_score()
+    
+    def update_state(self, state):
+        if self.game.root.state != state:
+            for child in self.game.root.children:
+                if child.state == state:
+                    self.game.root = child
 
-        for node in list(self.tree.nodes.values()):
-                
-            winner = node.check_for_winner()
+    def choose_move(self, choices):
 
-            if winner == 'tie':
-                node.score = 0
-            elif winner == self.tree.player_number:
-                node.score = 1
-            else:
-                node.score = -1
-            
-            parent_nodes += node.parent_nodes
+        for child in self.game.root.children:
+            if child.score == max(node.score for node in self.game.root.children):
+
+                for i in range(3):
+                    for j in range(3):
+                        if self.game.root.state[i][j] != child.state[i][j]:
+                            return (i, j)
+
+if __name__ == "__main__":
+
+    tree = ReducedTicTacToeTree([[None for _ in range(3)] for _ in range(3)], 1)
+    tree.build_tree()
+
+    old_state = [[1, 2, 1], [2, None, 1], [2, 1, 2]]
+    new_state = [[1, 2, 1], [2, 1, 1], [2, 1, 2]]
+    node = tree.all_nodes[str(old_state)]
+    print(tree.get_move_from_states(old_state, new_state))

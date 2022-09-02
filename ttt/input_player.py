@@ -6,12 +6,12 @@ class InputPlayer():
     
     def __init__(self):
         self.player_number = None
-
-    def set_player_symbol(self, n):
-        self.symbol = n
-  
+        
     def set_player_number(self, n):
-        self.number = n
+        self.player_number = n
+
+    def update_state(self, state):
+        pass
 
     def choose_move(self, choices):
         
