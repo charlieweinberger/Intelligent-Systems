@@ -6,8 +6,8 @@ from minimax_player import *
 
 # change these variables
 
-game_type = ['input', 'minimax']
-num_games_if_no_human = 10
+game_type = ['random', 'minimax']
+num_games_if_no_human = 15
 
 # don't change below
 
@@ -23,6 +23,8 @@ for i in range(2):
     for j in range(num_games):
 
         if human_is_playing and j > 0: continue
+
+        print(f'Running game {j + i*num_games_if_no_human + 1}...')
 
         players = []
         for player in game_type:
