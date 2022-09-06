@@ -1,7 +1,7 @@
 from game_tree import *
 
 class MinimaxPlayer():
-
+    
     def __init__(self):
         self.player_number = None
     
@@ -16,13 +16,13 @@ class MinimaxPlayer():
             for child in self.game.root.children:
                 if child.state == state:
                     self.game.root = child
+    
+    def choose_move(self, state):
 
-    def choose_move(self, choices):
-
-        for child in self.game.root.children:
-            if child.score == max(node.score for node in self.game.root.children):
-
+        for node in self.game.root.children:
+            if node.score == max(node.score for node in self.game.root.children):
+                
                 for i in range(3):
                     for j in range(3):
-                        if self.game.root.state[i][j] != child.state[i][j]:
+                        if self.game.root.state[i][j] != node.state[i][j]:
                             return (i, j)
