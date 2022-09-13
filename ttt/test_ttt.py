@@ -7,7 +7,7 @@ from minimax_player import *
 # change these variables
 
 game_type = ['random', 'minimax']
-num_games_if_no_human = 15
+num_games_if_no_human = 1
 
 # don't change below
 

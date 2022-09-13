@@ -7,7 +7,7 @@ class Node():
         self.player_turn = player_turn
         self.player_number = player_number
         self.winner = self.check_for_winner()
-        self.previous = []
+        # self.previous = []
         self.children = []
         self.score = None
     
@@ -78,12 +78,12 @@ class ReducedTicTacToeTree():
         
             if str(state_copy) in list(self.all_nodes.keys()):
                 children.append(self.all_nodes[str(state_copy)])
-                self.all_nodes[str(state_copy)].previous.append(node)
+                # self.all_nodes[str(state_copy)].previous.append(node)
             
             else:
         
                 child = Node(state_copy, 3 - node.player_turn, self.player_number)
-                child.previous = [node]
+                # child.previous = [node]
                 children.append(child)
                 self.all_nodes[str(state_copy)] = child
         
