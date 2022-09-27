@@ -1,13 +1,15 @@
 from ttt import *
 from game_tree import *
+from reduced_search_game_tree import *
 from random_player import *
 from input_player import *
 from minimax_player import *
+from heuristic_minimax_player import *
 
 # change these variables
 
-game_type = ['random', 'minimax']
-num_games_if_no_human = 1
+game_type = ['random', '2-ply']
+num_games_if_no_human = 10
 
 # don't change below
 
@@ -24,23 +26,24 @@ for i in range(2):
 
         if human_is_playing and j > 0: continue
 
-        print(f'Running game {j + i*num_games_if_no_human + 1}...')
+        print(f'\nRunning game {j + i*num_games_if_no_human + 1}...')
 
         players = []
         for player in game_type:
             if player == 'random':  players.append(RandomPlayer())
             if player == 'input':   players.append(InputPlayer())
             if player == 'minimax': players.append(MinimaxPlayer())
+            if player[1:] == '-ply': players.append(HeuristicMinimaxPlayer(int(player[0])))
 
-        if i % 2 == 1: players = players[::-1]
+        if i % 2 == 1: players = players[::-1]        
 
         game = TicTacToe(players, show_board = human_is_playing)
         game.run_to_completion()
 
         winner_map = {
-            'tie': 'tie',
             1: game_type[i],
-            2: game_type[1 - i]
+            2: game_type[1 - i],
+            'tie': 'tie'
         }
 
         score[winner_map[game.winner]] += 1
