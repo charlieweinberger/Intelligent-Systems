@@ -145,3 +145,7 @@ if __name__ == "__main__":
         tree = ReducedSearchTree([[None for _ in range(3)] for _ in range(3)], 1, i)
         tree.build_tree()
         print(f'Total number of nodes: {len(list(tree.all_nodes.keys()))}')
+
+# ask justin about pruning:
+
+# Note that this time, you'll have to relabel the game tree on every move because the terminal nodes of the tree will change (thereby changing the minimax values of the rest of the tree). But you don't need to rebuild the full game tree on every move - you can take the existing game tree, prune off nodes that are no longer irrelevant, and grow the additional nodes needed to bring you back to a search depth of N.
