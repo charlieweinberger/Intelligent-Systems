@@ -17,6 +17,8 @@ class TicTacToe:
         
         for player in self.players:
             
+            print(self.state)
+
             player_move = player.choose_move(self.state)
             self.state[player_move[0]][player_move[1]] = player.player_number
             self.update_player_states()
