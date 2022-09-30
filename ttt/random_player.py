@@ -14,5 +14,5 @@ class RandomPlayer:
     def choose_move(self, state):
         choices = [(i, j) for i in range(3) for j in range(3) if state[i][j] == None]
         choice = random.choice(choices)
-        # print(f'random player class: {choice}')
+        print(f'random player class move: {choice}')
         return choice

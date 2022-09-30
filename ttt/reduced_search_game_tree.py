@@ -1,4 +1,5 @@
 import copy, math
+from tic_tac_toe import *
 
 class Node():
     
@@ -10,6 +11,7 @@ class Node():
         self.depth = depth
 
         self.winner = self.check_for_winner()
+        self.parents = []
         self.children = []
         self.score = None
     
@@ -93,35 +95,33 @@ class ReducedSearchTree():
     
     def create_node_children(self, node):
         
-        if node.winner != None or len(node.children) != 0:
-            return
+        if node.winner == None and len(node.children) == 0:
         
-        children = []
-        choices = [(i, j) for i in range(3) for j in range(3) if node.state[i][j] == None]
-        
-        for choice in choices:
-        
-            state_copy = copy.deepcopy(node.state)
-            state_copy[choice[0]][choice[1]] = node.player_turn
-        
-            if str(state_copy) in list(self.all_nodes.keys()):
-                children.append(self.all_nodes[str(state_copy)])
+            children = []
+            choices = [(i, j) for i in range(3) for j in range(3) if node.state[i][j] == None]
             
-            else:
-        
-                child = Node(state_copy, 3 - node.player_turn, self.player_number, node.depth + 1)
+            for choice in choices:
+            
+                state_copy = copy.deepcopy(node.state)
+                state_copy[choice[0]][choice[1]] = node.player_turn
+
+                if str(state_copy) not in list(self.all_nodes.keys()):
+                    self.all_nodes[str(state_copy)] = Node(state_copy, 3 - node.player_turn, self.player_number, node.depth + 1)
+                
+                child = self.all_nodes[str(state_copy)]
+                child.parents.append(node)
                 children.append(child)
-                self.all_nodes[str(state_copy)] = child
+
+            node.children = children
         
-        node.children = children
+        for child in node.children:
+            child.depth = node.depth + 1
 
     def build_tree(self):
         
         # print(f'{self.current_nodes[0].depth = }')
 
         if len(self.current_nodes) == 0 or self.current_nodes[0].depth == self.ply:
-            # print('done')
-            self.current_nodes = [self.root]
             return
 
         # print(f'building children for layer {self.current_nodes[0].depth + 1}...')
@@ -129,23 +129,16 @@ class ReducedSearchTree():
         all_children = []
         for node in self.current_nodes:
             self.create_node_children(node)
-            if len(node.children) != 0:
-                all_children += node.children
+            all_children += node.children
         
-        # print(f'children for layer {self.current_nodes[0].depth + 1} have been built')
-
         self.current_nodes = all_children
         self.build_tree()
 
 if __name__ == "__main__":
 
-    for i in [5]:
-    # for i in range(10):
+    # for i in [0, 1, 2]:
+    for i in range(10):
         print(f'\nReduced Search Depth {i}-ply:')
         tree = ReducedSearchTree([[None for _ in range(3)] for _ in range(3)], 1, i)
         tree.build_tree()
         print(f'Total number of nodes: {len(list(tree.all_nodes.keys()))}')
-
-# ask justin about pruning:
-
-# Note that this time, you'll have to relabel the game tree on every move because the terminal nodes of the tree will change (thereby changing the minimax values of the rest of the tree). But you don't need to rebuild the full game tree on every move - you can take the existing game tree, prune off nodes that are no longer irrelevant, and grow the additional nodes needed to bring you back to a search depth of N.

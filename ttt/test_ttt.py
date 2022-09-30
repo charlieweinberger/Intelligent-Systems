@@ -1,4 +1,4 @@
-from ttt import *
+from tic_tac_toe import *
 from game_tree import *
 from reduced_search_game_tree import *
 from random_player import *
@@ -8,7 +8,7 @@ from heuristic_minimax_player import *
 
 # change these variables
 
-game_type = ['random', '2-ply']
+game_type = ['random', '3-ply']
 num_games_if_no_human = 10
 
 # don't change below
