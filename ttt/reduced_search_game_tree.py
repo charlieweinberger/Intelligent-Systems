@@ -94,14 +94,23 @@ class ReducedSearchTree():
         self.ply = ply
     
     def create_node_children(self, node):
-        
-        if node.winner == None and len(node.children) == 0:
+
+        # print(f'{node.winner = }')
+        # print(f'{node.depth = }')
+        # print(f'{len(node.children) = }')
+
+        if (node.winner == None or node.depth + 1 == self.ply) and len(node.children) == 0:
+
+            # print('b')
         
             children = []
             choices = [(i, j) for i in range(3) for j in range(3) if node.state[i][j] == None]
-            
+
+            # print('')
+            # print(str(node.state))
+
             for choice in choices:
-            
+
                 state_copy = copy.deepcopy(node.state)
                 state_copy[choice[0]][choice[1]] = node.player_turn
 
@@ -112,6 +121,7 @@ class ReducedSearchTree():
                 child.parents.append(node)
                 children.append(child)
 
+            # print(f'{len(children) = }')
             node.children = children
         
         for child in node.children:
@@ -119,6 +129,7 @@ class ReducedSearchTree():
 
     def build_tree(self):
         
+        # print(f'{len(self.current_nodes) = }')
         # print(f'{self.current_nodes[0].depth = }')
 
         if len(self.current_nodes) == 0 or self.current_nodes[0].depth == self.ply:

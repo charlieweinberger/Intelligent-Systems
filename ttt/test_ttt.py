@@ -8,8 +8,10 @@ from heuristic_minimax_player import *
 
 # change these variables
 
-game_type = ['random', '3-ply']
-num_games_if_no_human = 10
+# 9-ply should beat 2-ply, but they tie half the time
+
+game_type = ['2-ply', '9-ply']
+num_games_if_no_human = 25
 
 # don't change below
 
@@ -26,7 +28,7 @@ for i in range(2):
 
         if human_is_playing and j > 0: continue
 
-        print(f'\nRunning game {j + i*num_games_if_no_human + 1}...')
+        print(f'Running game {j + i*num_games_if_no_human + 1}...')
 
         players = []
         for player in game_type:
