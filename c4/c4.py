@@ -74,8 +74,8 @@ class Connect4:
                 board_full = False
 
             for player in self.players:
-                if row == [player.player_number for _ in range(4)]:
-                    return player.player_number
+                if len(set(row)) == 1 and row[0] != None:
+                    return row[0]
         
         return 'tie' if board_full else None
   

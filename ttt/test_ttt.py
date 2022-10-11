@@ -8,8 +8,6 @@ from heuristic_minimax_player import *
 
 # change these variables
 
-# 9-ply should beat 2-ply, but they tie half the time
-
 game_type = ['2-ply', '9-ply']
 num_games_if_no_human = 25
 

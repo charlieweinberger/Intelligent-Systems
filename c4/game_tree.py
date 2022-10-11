@@ -1,5 +1,5 @@
 import copy, math
-from tic_tac_toe import *
+from c4 import *
 
 class Node():
     
@@ -84,7 +84,7 @@ class Node():
             elif self.player_turn == 3 - self.player_number:
                 self.score = min(child_scores)
 
-class ReducedSearchTree():
+class C4GameTree():
     
     def __init__(self, root_state, player_number, ply):
         self.root = Node(root_state, 1, player_number, 0)
@@ -134,6 +134,6 @@ if __name__ == "__main__":
 
     for i in range(10):
         print(f'\nReduced Search Depth {i}-ply:')
-        tree = ReducedSearchTree([[None for _ in range(3)] for _ in range(3)], 1, i)
+        tree = C4GameTree([[None for _ in range(3)] for _ in range(3)], 1, i)
         tree.build_tree()
         print(f'Total number of nodes: {len(list(tree.all_nodes.keys()))}')

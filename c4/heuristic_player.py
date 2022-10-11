@@ -1,7 +1,7 @@
-from tic_tac_toe import *
-from reduced_search_game_tree import *
+from c4 import *
+from game_tree import *
 
-class HeuristicMinimaxPlayer():
+class HeuristicPlayer():
     
     def __init__(self, ply):
         self.player_number = None
@@ -9,7 +9,7 @@ class HeuristicMinimaxPlayer():
     
     def set_player_number(self, player_number):
         self.player_number = player_number
-        self.game = ReducedSearchTree([[None for _ in range(3)] for _ in range(3)], self.player_number, self.ply)
+        self.game = C4GameTree([[None for _ in range(3)] for _ in range(3)], self.player_number, self.ply)
         self.game.build_tree()
         self.game.root.set_score()
 
