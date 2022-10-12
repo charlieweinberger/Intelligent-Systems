@@ -1,5 +1,6 @@
 import copy, math
 from c4 import *
+from global_functions import *
 
 class Node():
     
@@ -10,39 +11,16 @@ class Node():
         self.player_number = player_number
         self.depth = depth
 
-        self.winner = self.check_for_winner()
+        self.winner = check_for_winner(self.state)
         self.parents = []
         self.children = []
         self.score = None
-    
-    def get_rcd_combinations(self):
-        return [
-            [self.state[0][i] for i in range(3)],
-            [self.state[1][i] for i in range(3)],
-            [self.state[2][i] for i in range(3)],
-            [self.state[i][0] for i in range(3)],
-            [self.state[i][1] for i in range(3)],
-            [self.state[i][2] for i in range(3)],
-            [self.state[i][i] for i in range(3)],
-            [self.state[i][2-i] for i in range(3)]
-        ]
-
-    def check_for_winner(self):
-        
-        rcd = self.get_rcd_combinations()
-        valid_rcd = [item for item in rcd if None not in item]
-
-        for row in valid_rcd:
-            if len(set(row)) == 1:
-                return row[0]
-        
-        return 'tie' if valid_rcd == rcd else None
     
     def set_score(self):
         
         if self.children == None or len(self.children) == 0:
         
-            self.winner = self.check_for_winner()
+            self.winner = check_for_winner(self.state)
 
             if self.winner:
 
@@ -56,14 +34,15 @@ class Node():
             else:
             
                 score = 0
+                combinations = get_combinations(self.state)
 
-                for row in self.get_rcd_combinations():
-                    if row.count(self.player_number) == 2 and row.count(None) == 1:
+                for row in combinations:
+                    if row.count(self.player_number) == 3 and row.count(None) == 1:
                         score += 1
-                    if row.count(3 - self.player_number) == 2 and row.count(None) == 1:
+                    if row.count(3 - self.player_number) == 3 and row.count(None) == 1:
                         score -= 1
                 
-                self.score = score / 8
+                self.score = score / len(combinations)
 
                 if self.score > 0:
                     self.winner = self.player_number
@@ -98,12 +77,11 @@ class C4GameTree():
         if (node.winner == None or node.depth + 1 == self.ply) and len(node.children) == 0:
         
             children = []
-            choices = [(i, j) for i in range(3) for j in range(3) if node.state[i][j] == None]
 
-            for choice in choices:
+            for choice in get_choices(node.state):
 
                 state_copy = copy.deepcopy(node.state)
-                state_copy[choice[0]][choice[1]] = node.player_turn
+                update_state(state_copy, choice, node.player_turn) # state_copy[choice[0]][choice[1]] = node.player_turn
 
                 if str(state_copy) not in list(self.all_nodes.keys()):
                     self.all_nodes[str(state_copy)] = Node(state_copy, 3 - node.player_turn, self.player_number, node.depth + 1)
@@ -134,6 +112,6 @@ if __name__ == "__main__":
 
     for i in range(10):
         print(f'\nReduced Search Depth {i}-ply:')
-        tree = C4GameTree([[None for _ in range(3)] for _ in range(3)], 1, i)
+        tree = C4GameTree([[None for _ in range(7)] for _ in range(6)], 1, i)
         tree.build_tree()
         print(f'Total number of nodes: {len(list(tree.all_nodes.keys()))}')

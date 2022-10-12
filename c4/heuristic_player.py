@@ -9,17 +9,28 @@ class HeuristicPlayer():
     
     def set_player_number(self, player_number):
         self.player_number = player_number
-        self.game = C4GameTree([[None for _ in range(3)] for _ in range(3)], self.player_number, self.ply)
+        self.game = C4GameTree([[None for _ in range(7)] for _ in range(6)], self.player_number, self.ply)
         self.game.build_tree()
         self.game.root.set_score()
+
+    def get_choices(self, state):
+
+        choices = []
+
+        for row in state:
+            for i, space in enumerate(row):
+                if space == None:
+                    choices.append(i)
+        
+        return list(set(choices))
 
     def choose_move(self, state):
 
         for node in self.game.root.children:
             if node.score == max(node.score for node in self.game.root.children):  
 
-                for i in range(3):
-                    for j in range(3):
+                for i in range(6):
+                    for j in range(7):
                         if self.game.root.state[i][j] != node.state[i][j]:
                             return (i, j)
         

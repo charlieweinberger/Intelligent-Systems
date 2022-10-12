@@ -3,10 +3,11 @@ from game_tree import *
 from last_minute_player import *
 from input_player import *
 from heuristic_player import *
+from global_functions import *
 
 # change these variables
 
-game_type = ['input', 'last minute']
+game_type = ['heuristic', 'last minute']
 num_games_if_no_human = 10
 
 # don't change below
@@ -30,7 +31,7 @@ for i in range(2):
         for player in game_type:
             if player == 'last minute': players.append(LastMinutePlayer())
             if player == 'input':       players.append(InputPlayer())
-            if player == 'heuristic':   players.append(HeuristicPlayer())
+            if player == 'heuristic':   players.append(HeuristicPlayer(5))
 
         if i % 2 == 1: players = players[::-1]        
 
