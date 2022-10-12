@@ -8,7 +8,7 @@ from global_functions import *
 # change these variables
 
 game_type = ['heuristic', 'last minute']
-num_games_if_no_human = 10
+num_games_if_no_human = 1
 
 # don't change below
 
@@ -31,7 +31,7 @@ for i in range(2):
         for player in game_type:
             if player == 'last minute': players.append(LastMinutePlayer())
             if player == 'input':       players.append(InputPlayer())
-            if player == 'heuristic':   players.append(HeuristicPlayer(5))
+            if player == 'heuristic':   players.append(HeuristicPlayer(4))
 
         if i % 2 == 1: players = players[::-1]        
 

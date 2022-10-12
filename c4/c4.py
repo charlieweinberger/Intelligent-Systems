@@ -37,5 +37,8 @@ class Connect4:
         self.player_turn += 1
         
     def run_to_completion(self):
+        i = 0
         while self.winner == None:
+            print(f'complete round {i}')
             self.complete_round()
+            i += 1

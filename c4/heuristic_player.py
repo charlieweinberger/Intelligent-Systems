@@ -25,14 +25,14 @@ class HeuristicPlayer():
         return list(set(choices))
 
     def choose_move(self, state):
-
+        
         for node in self.game.root.children:
             if node.score == max(node.score for node in self.game.root.children):  
-
-                for i in range(6):
-                    for j in range(7):
-                        if self.game.root.state[i][j] != node.state[i][j]:
-                            return (i, j)
+                
+                for move in get_choices(self.game.root.state):
+                    for i in range(5, -1, -1):
+                        if self.game.root.state[i][move] != node.state[i][move]:
+                            return move
         
     def update_state(self, state):
 

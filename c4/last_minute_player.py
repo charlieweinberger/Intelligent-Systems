@@ -1,4 +1,3 @@
-
 import copy, random
 from global_functions import *
 
