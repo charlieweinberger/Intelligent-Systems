@@ -9,10 +9,8 @@ class LastMinutePlayer:
     def set_player_number(self, n):
         self.player_number = n
 
-    def choose_move(self, state):
+    def choose_move(self, state, moves):
         
-        moves = get_choices(state)
-
         for move in moves:
 
             capture_win_state = copy.deepcopy(state)

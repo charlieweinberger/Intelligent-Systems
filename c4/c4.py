@@ -20,7 +20,7 @@ class Connect4:
         
         for player in self.players:
             
-            move = player.choose_move(self.state)
+            move = player.choose_move(self.state, get_choices(self.state))
             update_state(self.state, move, player.player_number)
             
             for player in self.players:
