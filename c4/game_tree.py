@@ -78,10 +78,10 @@ class C4GameTree():
         
             children = []
 
-            for choice in get_choices(node.state):
+            for move in get_moves(node.state):
 
                 state_copy = copy.deepcopy(node.state)
-                update_state(state_copy, choice, node.player_turn) # state_copy[choice[0]][choice[1]] = node.player_turn
+                update_state(state_copy, move, node.player_turn)
 
                 if str(state_copy) not in list(self.all_nodes.keys()):
                     self.all_nodes[str(state_copy)] = Node(state_copy, 3 - node.player_turn, self.player_number, node.depth + 1)

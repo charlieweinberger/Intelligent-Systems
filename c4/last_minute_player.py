@@ -3,7 +3,7 @@ from global_functions import *
 
 class LastMinutePlayer:
     
-    def __init__(self):
+    def __init__(self, ply=None):
         self.player_number = None
   
     def set_player_number(self, n):

@@ -49,16 +49,16 @@ def print_board(state):
         print(row_string[:-1])
     print('')
 
-def get_choices(state):
+def get_moves(state):
 
-    choices = []
+    moves = []
 
     for row in state:
         for i, space in enumerate(row):
             if space == None:
-                choices.append(i)
+                moves.append(i)
     
-    return list(set(choices))
+    return list(set(moves))
 
 def update_state(state, move, number):
 

@@ -13,23 +13,12 @@ class HeuristicPlayer():
         self.game.build_tree()
         self.game.root.set_score()
 
-    def get_choices(self, state):
-
-        choices = []
-
-        for row in state:
-            for i, space in enumerate(row):
-                if space == None:
-                    choices.append(i)
-        
-        return list(set(choices))
-
     def choose_move(self, state, moves):
         
         for node in self.game.root.children:
             if node.score == max(node.score for node in self.game.root.children):  
                 
-                for move in get_choices(self.game.root.state):
+                for move in get_moves(self.game.root.state):
                     for i in range(5, -1, -1):
                         if self.game.root.state[i][move] != node.state[i][move]:
                             return move
