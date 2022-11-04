@@ -1,4 +1,5 @@
 import random
+from global_functions import *
 
 class Connect4:
     
@@ -19,74 +20,30 @@ class Connect4:
         
         for player in self.players:
             
-            self.update_state(player)
-            self.winner = self.check_for_winner()
+            moves = get_moves(self.state)
+            move = player.choose_move(self.state, moves)
+
+            if (move not in moves):
+                move = moves[0]
+
+            update_state(self.state, move, player.player_number)
+            
+            for player in self.players:
+                player.update_state(self.state)
+
+            self.winner = check_for_winner(self.state)
 
             if self.winner:
                 if self.show_board:
-                    self.print_board()
+                    print_board(self.state)
                     print(f'Winner: Player {self.winner}\n')
                 break
     
         self.player_turn += 1
-
-    def update_state(self, player):
-        
-        move = player.choose_move(self.state)
-
-        for i in range(5, -1, -1):
-            if self.state[i][move] == None:
-                self.state[i][move] = player.player_number
-                break
         
     def run_to_completion(self):
+        i = 0
         while self.winner == None:
+            print(f'complete round {i}')
             self.complete_round()
-
-    def check_for_winner(self):
-
-        four_in_a_row = []
-
-        for i in range(6):
-            for j in range(4):
-                row = [self.state[i][j + k] for k in range(4)]
-                four_in_a_row.append(row)
-
-        for i in range(3):
-            for j in range(7):
-                column = [self.state[i + k][j] for k in range(4)]
-                four_in_a_row.append(column)
-        
-        for i in range(3):
-            for j in range(4):
-                forward_diag = [self.state[i + k][j + k] for k in range(4)]
-                four_in_a_row.append(forward_diag)
-        
-        for i in range(3):
-            for j in range(3, 7):
-                backward_diag = [self.state[i + k][j - k] for k in range(4)]
-                four_in_a_row.append(backward_diag)
-
-        board_full = True
-        for row in four_in_a_row:
-            
-            if None in row:
-                board_full = False
-
-            for player in self.players:
-                if row == [player.player_number for _ in range(4)]:
-                    return player.player_number
-        
-        return 'tie' if board_full else None
-  
-    def print_board(self):
-        print('')
-        for row in self.state:
-            row_string = ''
-            for space in row:
-                if space == None:
-                    row_string += '_ '
-                else:
-                    row_string += str(space) + ' '
-            print(row_string[:-1])
-        print('')
+            i += 1

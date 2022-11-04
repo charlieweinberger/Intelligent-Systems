@@ -16,18 +16,18 @@ class TicTacToe:
     def complete_round(self):
         
         for player in self.players:
-            
-            print(self.state)
 
             player_move = player.choose_move(self.state)
             self.state[player_move[0]][player_move[1]] = player.player_number
-            self.update_player_states()
+            
+            for player in self.players:
+                player.update_state(self.state)
             
             self.winner = self.check_for_winner()
 
             if self.winner:
                 if self.show_board:
-                    self.print_board()
+                    print_board(self.state)
                     print(f'Winner: {self.winner}\n')
                 break
     
@@ -61,20 +61,15 @@ class TicTacToe:
                     return player.player_number
         
         return 'tie' if board_full else None
-  
-    def print_board(self):
 
-        print('')
-        for row in self.state:
-            row_string = ''
-            for space in row:
-                if space == None:
-                    row_string += '_|'
-                else:
-                    row_string += str(space) + '|'
-            print(row_string[:-1])
-        print('')
-
-    def update_player_states(self):
-        for player in self.players:
-            player.update_state(self.state)
+def print_board(state):
+    print('')
+    for row in state:
+        row_string = ''
+        for space in row:
+            if space == None:
+                row_string += '_|'
+            else:
+                row_string += str(space) + '|'
+        print(row_string[:-1])
+    print('')
