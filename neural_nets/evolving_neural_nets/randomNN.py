@@ -13,7 +13,7 @@ class Node():
 
 class RandomNeuralNet():
 
-    def __init__(self, node_layers, f, weight_range, mutation_rate):
+    def __init__(self, node_layers, bias_node_indices, f, weight_range, mutation_rate):
 
         self.num_nodes = sum(node_layers)
         if len(node_layers) > 2: self.num_nodes += len(node_layers) - 2
@@ -21,7 +21,7 @@ class RandomNeuralNet():
         self.f = f
 
         self.nodes = [Node(index) for index in range(1, self.num_nodes + 1)]
-        self.bias_node_indices = []
+        self.bias_node_indices = bias_node_indices
 
         self.weights = self.random_weights(node_layers, weight_range)
 
