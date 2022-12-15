@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 plt.style.use('bmh')
-from fogelNN import *
+from fogelENN import *
 
 """
 
@@ -22,12 +22,8 @@ data = normalize_data([
     (4.0, -5.76), (4.2, -7.01), (4.4, -7.38), (4.6, -6.76), (4.8, -5.22)
 ])
 
-# edited code below
-
 mutation_rate = 0.05
 evolvingNN = FogelEvolvingNeuralNet(data, mutation_rate)
-
-# edited code above
 
 graph_x = list(range(0, 1, 0.001)) # [x/1000 for x in range(0, 1000)]
 
@@ -38,18 +34,10 @@ for net in evolvingNN.nets:
 
 generation_nums = [1, 2, 5, 10, 25, 50, 100, 200, 500, 1000, 1500, 2000, 2500]
 
-avg_rss = []
 for num in generation_nums:
     while evolvingNN.gen != num:
         evolvingNN.make_new_gen()
-    avg_rss.append(evolvingNN.avg_rss())
 
 for net in evolvingNN.nets:
     plt.plot(graph_x, [net.predict(x) for x in graph_x], color='red')
-plt.savefig('neural_nets/evolving_neural_nets/enn_data_initial_regressor_vs_final_regressor.png')
-
-plt.figure(1)
-plt.plot(generation_nums, avg_rss)
-plt.xlabel('# of generations')
-plt.ylabel('average rss')
-plt.savefig('neural_nets/evolving_neural_nets/enn_#_gens_vs_average_rss.png')
+plt.savefig('neural_nets/fogel/initial_vs_final_regressor.png')
