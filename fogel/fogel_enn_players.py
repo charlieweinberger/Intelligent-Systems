@@ -21,7 +21,7 @@ class EvolvingNeuralNetPlayers():
             player.initialize_net()
         self.gen_num += 1
     
-    def run_games(self, players=None):
+    def run_first_eval(self, players=None):
         
         if players == None: players = self.players
 
@@ -51,9 +51,10 @@ class EvolvingNeuralNetPlayers():
                     player.eval_score += 1
     
     def get_top_networks(self):
-        self.run_games()
+        self.run_first_eval()
         self.run_second_eval()
-        self.players.sort(key=lambda p: p.eval_score, reverse=True)
+        self.players.sort(key=lambda player: player.eval_score, reverse=True)
+        self.prev_gen_payoffs = [p.payoff_score for p in self.players]
         return self.players[:int(self.num_players / 2)]
 
     def reset_scores(self, players):
@@ -63,14 +64,11 @@ class EvolvingNeuralNetPlayers():
     
     def make_new_gen(self):
         
-        if len(self.players) == 0:
-            self.initialize_first_gen()
+        if len(self.players) == 0: self.initialize_first_gen()
 
         top_players = self.get_top_networks()
         new_players = [player.replicate() for player in top_players]
         new_gen = top_players + new_players
-        
-        self.prev_gen_payoffs = [p.payoff_score for p in self.players]
 
         self.reset_scores(new_gen)
         self.players = new_gen

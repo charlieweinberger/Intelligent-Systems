@@ -57,6 +57,11 @@ class FogelEvolvingNeuralNet():
             for out_node in self.out_layer:
                 self.weights[f'{h_node.index}{out_node.index}'] = random.randint(-500, 500) / 1000
     
+    def get_nodes_from_weight_string(self, key):
+        node_1_index = int(key[:int(len(key) / 2)])
+        node_2_index = int(key[int(len(key) / 2):])
+        return [self.get_node(node_1_index), self.get_node(node_2_index)]
+
     def get_node(self, index):
         for node in self.in_layer + self.h_layer + self.out_layer:
             if node.index == index:
@@ -71,8 +76,7 @@ class FogelEvolvingNeuralNet():
 
     def connect_nodes(self):
         for key in self.weights:
-            node_0 = self.get_node(int(key[:int(len(key) / 2)]))
-            node_1 = self.get_node(int(key[int(len(key) / 2):]))
+            node_0, node_1 = self.get_nodes_from_weight_string(key)
             node_0.info_to.append(node_1)
             node_1.info_from.append(node_0)
     
@@ -102,22 +106,6 @@ class FogelEvolvingNeuralNet():
         
         return [node.output for node in self.out_layer]
     
-    def make_a_copy(self):
-        
-        new_net = FogelEvolvingNeuralNet()
-        
-        new_net.in_layer = copy.deepcopy(self.in_layer)
-        new_net.h_layer = copy.deepcopy(self.h_layer)
-        new_net.out_layer = copy.deepcopy(self.out_layer)
-        new_net.weights = copy.deepcopy(self.weights)
-
-        new_net.reset_nodes()
-        new_net.connect_nodes()
-
-        new_net.counter = int(self.counter)
-        
-        return new_net
-    
     def add_H_node(self):
         
         if len(self.h_layer) == 11: return
@@ -140,25 +128,36 @@ class FogelEvolvingNeuralNet():
         
         random_node = random.choice([node for node in self.h_layer if not node.is_biased])
         weights_to_delete = []
-        
+
         for key in self.weights:
-            if random_node.index in [int(k) for k in key]:
+            if random_node in self.get_nodes_from_weight_string(key):
                 weights_to_delete.append(key)
-        
+
         for key in weights_to_delete:
             del self.weights[key]
-        
-        self.h_layer.remove(random_node)
+
         self.num_H -= 1
+        self.h_layer.remove(random_node)
         
         for in_node in self.in_layer:
             in_node.info_to.remove(random_node)
         for out_node in self.out_layer:
             out_node.info_from.remove(random_node)
-    
+
     def replicate(self):
 
-        new_net = self.make_a_copy()
+        new_net = FogelEvolvingNeuralNet()
+        
+        new_net.in_layer = copy.deepcopy(self.in_layer)
+        new_net.h_layer = copy.deepcopy(self.h_layer)
+        new_net.out_layer = copy.deepcopy(self.out_layer)
+
+        new_net.weights = {key:self.weights[key] for key in self.weights}
+
+        new_net.reset_nodes()
+        new_net.connect_nodes()
+
+        new_net.counter = int(self.counter)
 
         for key in new_net.weights:
             new_net.weights[key] += numpy.random.normal(0, 0.05)

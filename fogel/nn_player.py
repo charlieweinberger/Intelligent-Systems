@@ -3,9 +3,9 @@ from fogel_nn import *
 
 class NeuralNetPlayer():
 
-    def __init__(self, net = FogelEvolvingNeuralNet()):
+    def __init__(self, net=None):
         self.player_number = None
-        self.net = net
+        self.net = FogelEvolvingNeuralNet() if net == None else net
         self.payoff_score = 0
         self.eval_score = 0
     
@@ -34,6 +34,7 @@ class NeuralNetPlayer():
             max_index = outputs.index(max(out_vals))
         
         return (math.floor(max_index / 3), max_index % 3)
+
     
     def initialize_net(self):
         self.net.initialize()
