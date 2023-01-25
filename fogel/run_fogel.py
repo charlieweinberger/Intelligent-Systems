@@ -10,7 +10,7 @@ version = 'full'
 
 num_parent_networks = 10 if version == 'simple' else 50
 num_trials          =  5 if version == 'simple' else 20
-num_gens            = 50 if version == 'simple' else 800
+num_gens            = 50 if version == 'simple' else 100
 
 gens = list(range(num_gens))
 max_payoffs = [0]*num_gens
@@ -25,12 +25,12 @@ for i in range(num_trials):
     ennp.initialize_first_gen()
             
     for gen_num in range(num_gens):
-        if gen_num % (num_gens / 10) == 0: print(f'gen {gen_num + 1}')
+        print(f'gen {gen_num + 1}')
         ennp.make_new_gen()
         max_payoffs[gen_num] += max(ennp.prev_gen_payoffs) / num_trials
     
     ennp.get_top_networks()
-    pickle.dump(copy.deepcopy(ennp.players), file)
+    pickle.dump(ennp.copy_players(), file)
 
 file.close()
 

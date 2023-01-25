@@ -16,14 +16,17 @@ class NeuralNetPlayer():
         pass
     
     def choose_move(self, state):
-        
+                
+        state_map = {
+            None: 0,
+            self.player_number: 1,
+            3 - self.player_number: -1
+        }
+
         flattened_state = []
-        
         for row in state:
-            for item in row:
-                if item == None:                   flattened_state.append(0)
-                if item == self.player_number:     flattened_state.append(1)
-                if item == 3 - self.player_number: flattened_state.append(-1)
+            for elem in row:
+                flattened_state.append(state_map[elem])
 
         outputs = self.net.input_array(flattened_state)
         out_vals = list(outputs)

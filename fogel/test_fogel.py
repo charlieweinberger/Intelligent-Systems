@@ -13,6 +13,8 @@ with open('fogel/nn_players.pickle', 'rb') as f:
         except EOFError:
             break
 
+net = NeuralNetPlayer(final_gen_players[0][0])
+
 score = {'neural net': 0, 'random': 0, 'tie': 0}
 
 for i in range(2):
@@ -20,7 +22,7 @@ for i in range(2):
 
         print(f'Running game {j + i*25 + 1}...')
 
-        players = [final_gen_players[0][0], RandomPlayer()]
+        players = [net, RandomPlayer()]
         if i % 2 == 1: players = players[::-1]        
 
         game = TicTacToe(players)

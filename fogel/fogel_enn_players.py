@@ -1,4 +1,4 @@
-import random, sys
+import random, sys, copy
 sys.path.append('ttt')
 from tic_tac_toe import *
 from nn_player import *
@@ -11,7 +11,7 @@ class EvolvingNeuralNetPlayers():
         self.num_players = num_players
         self.num_games = num_games
         
-        self.players = []
+        self.players = []   
         self.prev_gen_payoffs = []
         self.gen_num = 0
     
@@ -41,9 +41,9 @@ class EvolvingNeuralNetPlayers():
         if players == None: players = self.players
 
         for i, player in enumerate(self.players):
-            other_player_index = [index for index in range(len(self.players)) if index != i]
             for _ in range(10):
-                
+
+                other_player_index = [index for index in range(len(self.players)) if index != i]
                 random_index = random.choice(other_player_index)
                 random_player = self.players[random_index]
                 
@@ -73,3 +73,6 @@ class EvolvingNeuralNetPlayers():
         self.reset_scores(new_gen)
         self.players = new_gen
         self.gen_num += 1
+    
+    def copy_players(self):
+        return [copy.deepcopy(player.net) for player in self.players]
