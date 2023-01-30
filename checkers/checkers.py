@@ -1,4 +1,6 @@
-import random, time
+import random, time, sys
+sys.path.append("./global_functions.py")
+from global_functions import *
 
 class Checkers:
     
@@ -76,7 +78,7 @@ class Checkers:
                         move_to_check = moves_to_check.pop(0) # moves_to_check is a queue
                         coord, translation_to_check, captured_coords = move_to_check
 
-                        new_i, new_j = self.translate(coord, translation_to_check)
+                        new_i, new_j = translate(coord, translation_to_check)
                         if new_i < 0 or new_i > 7 or new_j < 0 or new_j > 7: continue
                         new_piece = state[new_i][new_j]
 
@@ -92,22 +94,22 @@ class Checkers:
                             # if so, and if the next next spot is empty, add that spot to moves_to_check
 
                             next_translation = [2*t for t in translation_to_check]
-                            new_new_i, new_new_j = self.translate(coord, next_translation)
+                            new_new_i, new_new_j = translate(coord, next_translation)
                             if new_new_i < 0 or new_new_i > 7 or new_new_j < 0 or new_new_j > 7: continue
                             new_new_piece = state[new_new_i][new_new_j]
 
-                            if abs(new_new_piece) == 0 and not self.nested_list_in_list(captured_coords, [new_i, new_j]):
+                            if abs(new_new_piece) == 0 and not self.nested_list_in_list([new_i, new_j], captured_coords):
 
                                 # add capture to possible moves
 
                                 previous_translation = self.find_translation(coord, current_coords)
-                                new_translation = self.translate(previous_translation, next_translation)
+                                new_translation = translate(previous_translation, next_translation)
                                 new_captured_coords = captured_coords + [[new_i, new_j]]
                                 possible_moves.append([current_coords, new_translation, new_captured_coords])
 
                                 # add potential to combo captures
 
-                                next_next_coords = self.translate(current_coords, new_translation)
+                                next_next_coords = translate(current_coords, new_translation)
                                 moves_to_check = self.add_moves_to_check(current_piece, next_next_coords, new_captured_coords, moves_to_check)
 
                                 # then, it'll loop back to the start of moves_to_check
@@ -130,7 +132,7 @@ class Checkers:
     def update_state(self, player, move):
 
         current_coords, translation, captured_coords = move
-        new_coords = self.translate(current_coords, translation)
+        new_coords = translate(current_coords, translation)
 
         self.state[new_coords[0]][new_coords[1]] = self.state[current_coords[0]][current_coords[1]] # set new coord to the old coord's piece
         self.state[current_coords[0]][current_coords[1]] = 0 # set old coord to 0
@@ -160,25 +162,11 @@ class Checkers:
 
         return None
 
-    def translate(self, coord1, coord2):
-        return [coord1[0] + coord2[0], coord1[1] + coord2[1]]
-
     def find_translation(self, coord1, coord2):
         return [coord1[0] - coord2[0], coord1[1] - coord2[1]]
 
-    def lists_are_equal(self, list1, list2):
-        if len(list1) != len(list2): return False
-        for i in range(len(list1)):
-            if list1[i] != list2[i]: return False
-        return True
-
-    def nested_list_in_list(self, parent_list, nested_list):
+    def nested_list_in_list(self, nested_list, parent_list):
         for l in parent_list:
             if all(x == y for x, y in zip(l, nested_list)):
                 return True
         return False
-
-    def print_state(self):
-        print("self.state:")
-        for row in self.state:
-            print(row)

@@ -1,4 +1,6 @@
-import random
+import random, sys
+sys.path.append("./global_functions.py")
+from global_functions import *
 
 class RandomPlayer:
 
@@ -10,13 +12,12 @@ class RandomPlayer:
 
     def choose_move(self, state, moves):
 
-        print(f'\nPlayer {self.player_num}\'s turn!\n')
+        print(f'\nPlayer {self.player_num}\'s turn!')
 
-        for row in state:
-            print(row)
+        print_state(state)
 
         move = random.choice(moves)
 
-        print(f'\nPlayer {self.player_num}\'s move: {move}\n\n-----------------------------------------------------------------')
+        print(f'\nPlayer {self.player_num}\'s move: {print_move(move)}\n\n-----------------------------------------------------------------')
 
         return move

@@ -33,23 +33,18 @@ elif game_mode == 'custom': # custom game state
 
     custom_state = [ # [0, 0, 0, 0, 0, 0, 0, 0],
         [ 0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  1,  0,  0,  0],
         [ 0,  0,  0,  0,  0,  0,  0,  0],
-        [ 0, -2,  0, -2,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0, -2,  0,  2,  0, -2,  0,  0],
         [ 0,  0,  0,  0,  0,  0,  0,  0],
         [ 0, -2,  0,  0,  0,  0,  0,  0],
         [-1,  0,  0,  0,  0,  0,  0,  0],
-        [ 0,  0,  0,  0,  0,  0,  0,  0],
-        [ 0,  0,  0,  0,  0,  0,  0,  0],
     ]
 
     players = [InputPlayer(), InputPlayer()]
     game = Checkers(players)
     possible_moves = game.get_possible_moves(game.players[0], custom_state)
 
-    print('\nstate:')
-    for row in custom_state:
-        print(row)
-
-    print('\npossible moves:')
-    for move in possible_moves:
-        print(move)
+    print_state(custom_state)
+    print_moves(possible_moves)
