@@ -24,28 +24,12 @@ def print_moves(moves):
         print(f'{i}: {print_move(moves[i])}')
 
 def print_move(move):
+    
+    current_coord, translation, captured_coord = move
+    to_print = f'{current_coord} -> {translate(current_coord, translation)}'
 
-    current_coords, translation, captured_coords = move
-    to_print = f'{current_coords} -> {translate(current_coords, translation)}'
-
-    if captured_coords != []:
-        
-        to_print += f' (will capture '
-        
-        if len(captured_coords) == 1:
-            to_print += f'{captured_coords[0]})'
-        
-        elif len(captured_coords) == 2:
-            to_print += f'{captured_coords[0]} and {captured_coords[1]})'
-
-        else:
-        
-            for j in range(len(captured_coords)):
-                coord = captured_coords[j]
-                if j != len(captured_coords) - 1:
-                    to_print += f'{coord}, '
-                else:
-                    to_print += f'and {coord})'
+    if captured_coord != []:
+        to_print += f' (will capture {captured_coord})'
 
     return to_print
 

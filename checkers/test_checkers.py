@@ -2,10 +2,13 @@ from checkers import *
 from random_player import *
 from input_player import *
 
+# Move order to test chain capturing: 0017425
+
 # EDIT THIS
 
 game_mode = 'input' # random, input, custom
 num_random_games = 100
+print_data_for_random = False
 
 # DON'T EDIT THIS
 
@@ -14,7 +17,7 @@ if game_mode == 'random': # random players
     score = { 1: 0, 2: 0, 'tie': 0 }
 
     for i in range(num_random_games):
-        players = [RandomPlayer(), RandomPlayer()]
+        players = [RandomPlayer(print_data_for_random), RandomPlayer(print_data_for_random)]
         game = Checkers(players)
         game.run_to_completion()
         score[game.winner] += 1
@@ -44,7 +47,7 @@ elif game_mode == 'custom': # custom game state
 
     players = [InputPlayer(), InputPlayer()]
     game = Checkers(players)
-    possible_moves = game.get_possible_moves(game.players[0], custom_state)
+    possible_moves = game.get_all_possible_moves(game.players[0], custom_state)
 
     print_state(custom_state)
     print_moves(possible_moves)

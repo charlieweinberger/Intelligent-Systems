@@ -33,112 +33,112 @@ class Checkers:
 
             for player in self.players:
 
-                possible_moves = self.get_possible_moves(player)
+                possible_moves = self.get_all_possible_moves(player, self.state)
+                first_time = True
 
                 if possible_moves == []:
                     self.winner = 3 - player.player_num
                     break
 
-                move = player.choose_move(self.state, possible_moves)
-                if move == None: move = random.choice(possible_moves)
+                # check if they haven't moved yet OR they can move again
 
-                self.update_state(player, move)
-                
-                self.winner = self.check_for_winner()
-                if self.winner: break
-        
+                while first_time or len(possible_moves) > 1:
+
+                    # choose move
+
+                    move = player.choose_move(self.state, possible_moves, first_time)
+                    if move == None: move = random.choice(possible_moves)
+
+                    # update board and winner
+
+                    self.update_state(player, move)
+                    
+                    self.winner = self.check_for_winner()
+                    if self.winner: break
+
+                    # if they captured on their 1st move, allow player to move again
+
+                    first_time = False
+
+                    if move[2] != []:
+                        new_coords = translate(move[0], move[1])
+                        possible_moves = self.get_possible_moves_for_piece(player, new_coords, self.state, first_time)
+                    else:
+                        possible_moves = []
+
             self.player_turn += 1
 
-    def get_possible_moves(self, player, state=None):
+    def get_all_possible_moves(self, player, state):
         
-        if state == None: state = self.state
-
         possible_moves = []
-
-        # loop through all coordinates
 
         for i in range(8):
             for j in range(8):
+                if abs(state[i][j]) == player.player_num:
+                    possible_moves += self.get_possible_moves_for_piece(player, [i, j], state)
+        
+        return possible_moves
+    
+    def get_possible_moves_for_piece(self, player, coord, state, first_time=True):
+        
+        # get translations to check
 
-                current_coords = [i, j]
-                current_piece = state[i][j]
+        piece = state[coord[0]][coord[1]]
+        d = 1 - 2*(piece % 2)
 
-                # check if there is a piece on the current coord
+        translations_to_check = [[d, -1], [d, 1]]
+        if piece < 0: translations_to_check += [[-d, -1], [-d, 1]]
 
-                if abs(current_piece) == player.player_num:
+        possible_moves = []
 
-                    # get moves that the piece might be able to do
+        # add option to NOT chain capture
 
-                    moves_to_check = self.add_moves_to_check(current_piece, current_coords, [], [])
+        if not first_time:
+            possible_moves.append([coord, [0, 0], []])
 
-                    while len(moves_to_check) > 0:
+        # loop through translations
 
-                        # check first move in moves_to_check
+        for translation_to_check in translations_to_check:
 
-                        move_to_check = moves_to_check.pop(0) # moves_to_check is a queue
-                        coord, translation_to_check, captured_coords = move_to_check
+            # check if the new spot is empty
 
-                        new_i, new_j = translate(coord, translation_to_check)
-                        if new_i < 0 or new_i > 7 or new_j < 0 or new_j > 7: continue
-                        new_piece = state[new_i][new_j]
+            new_i, new_j = translate(coord, translation_to_check)
+            if new_i < 0 or new_i > 7 or new_j < 0 or new_j > 7: continue
+            new_piece = state[new_i][new_j]
 
-                        # check if the new spot is empty
+            if abs(new_piece) == 0 and first_time:
+                possible_moves.append([coord, translation_to_check, []])
+        
+            # check if the opponent is in the new spot
 
-                        if abs(new_piece) == 0 and captured_coords == []:
-                            possible_moves.append(move_to_check)
-                    
-                        # check if the opponent is in the new spot
+            elif abs(new_piece) == 3 - player.player_num:
+                
+                # check if the next next spot is empty
 
-                        elif abs(new_piece) == 3 - player.player_num:
-                            
-                            # if so, and if the next next spot is empty, add that spot to moves_to_check
+                next_translation = [2*t for t in translation_to_check]
+                new_new_i, new_new_j = translate(coord, next_translation)
+                if new_new_i < 0 or new_new_i > 7 or new_new_j < 0 or new_new_j > 7: continue
+                new_new_piece = state[new_new_i][new_new_j]
 
-                            next_translation = [2*t for t in translation_to_check]
-                            new_new_i, new_new_j = translate(coord, next_translation)
-                            if new_new_i < 0 or new_new_i > 7 or new_new_j < 0 or new_new_j > 7: continue
-                            new_new_piece = state[new_new_i][new_new_j]
+                # add capture to possible moves
 
-                            if abs(new_new_piece) == 0 and not self.nested_list_in_list([new_i, new_j], captured_coords):
-
-                                # add capture to possible moves
-
-                                previous_translation = self.find_translation(coord, current_coords)
-                                new_translation = translate(previous_translation, next_translation)
-                                new_captured_coords = captured_coords + [[new_i, new_j]]
-                                possible_moves.append([current_coords, new_translation, new_captured_coords])
-
-                                # add potential to combo captures
-
-                                next_next_coords = translate(current_coords, new_translation)
-                                moves_to_check = self.add_moves_to_check(current_piece, next_next_coords, new_captured_coords, moves_to_check)
-
-                                # then, it'll loop back to the start of moves_to_check
+                if abs(new_new_piece) == 0:
+                    possible_moves.append([coord, next_translation, [new_i, new_j]])
         
         return possible_moves
 
-    def add_moves_to_check(self, current_piece, current_coords, captured_coords, moves_to_check):
-        
-        direction = 1 - 2*(current_piece % 2)
-
-        moves_to_check.append([current_coords, [direction, -1], captured_coords])
-        moves_to_check.append([current_coords, [direction, 1], captured_coords])
-
-        if current_piece < 0:
-            moves_to_check.append([current_coords, [-direction, -1], captured_coords])
-            moves_to_check.append([current_coords, [-direction, 1], captured_coords])
-        
-        return moves_to_check
-
     def update_state(self, player, move):
 
-        current_coords, translation, captured_coords = move
+        current_coords, translation, captured_coord = move
         new_coords = translate(current_coords, translation)
+
+        if translation == [0, 0]: return
 
         self.state[new_coords[0]][new_coords[1]] = self.state[current_coords[0]][current_coords[1]] # set new coord to the old coord's piece
         self.state[current_coords[0]][current_coords[1]] = 0 # set old coord to 0
 
-        for coords in captured_coords:
-            self.state[coords[0]][coords[1]] = 0 # set captured coords to 0
+        if captured_coord != []:
+            self.state[captured_coord[0]][captured_coord[1]] = 0 # set captured coords to 0
         
         # turn pieces into kings
 
@@ -164,9 +164,3 @@ class Checkers:
 
     def find_translation(self, coord1, coord2):
         return [coord1[0] - coord2[0], coord1[1] - coord2[1]]
-
-    def nested_list_in_list(self, nested_list, parent_list):
-        for l in parent_list:
-            if all(x == y for x, y in zip(l, nested_list)):
-                return True
-        return False
