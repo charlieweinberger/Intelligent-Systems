@@ -166,19 +166,8 @@ class Checkers:
     def find_translation(self, coord1, coord2):
         return [coord1[0] - coord2[0], coord1[1] - coord2[1]]
 
-    def lists_are_equal(self, list1, list2):
-        if len(list1) != len(list2): return False
-        for i in range(len(list1)):
-            if list1[i] != list2[i]: return False
-        return True
-
     def nested_list_in_list(self, parent_list, nested_list):
         for l in parent_list:
             if all(x == y for x, y in zip(l, nested_list)):
                 return True
         return False
-
-    def print_state(self):
-        print("self.state:")
-        for row in self.state:
-            print(row)
