@@ -32,7 +32,7 @@ elif game_mode == 'input': # input players
     game = Checkers(players)
     game.run_to_completion()
 
-    print(f'\n{game.winner = }')
+    print(f'\nWinner: Player {game.winner}!\n')
 
 elif game_mode == 'custom': # custom game state
 
