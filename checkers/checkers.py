@@ -5,7 +5,7 @@ class Checkers:
     def __init__(self, players):
 
         self.players = players
-        self.set_player_nums()
+        self.set_player_numbers()
 
         self.state = [
             [0, 2, 0, 2, 0, 2, 0, 2],
@@ -21,20 +21,26 @@ class Checkers:
         self.player_turn = 1
         self.winner = None
 
-    def set_player_nums(self):
-        self.players[0].set_player_num(1)
-        self.players[1].set_player_num(2)
+    def set_player_numbers(self):
+        self.players[0].set_player_number(1)
+        self.players[1].set_player_number(2)
 
     def run_to_completion(self):
 
         while self.winner == None:
+
+            print(f"{self.player_turn = }")
+
+            if self.player_turn > 100:
+                self.winner = "tie"
+                return
 
             for player in self.players:
 
                 possible_moves = self.get_possible_moves(player)
 
                 if possible_moves == []:
-                    self.winner = 3 - player.player_num
+                    self.winner = 3 - player.player_number
                     break
 
                 move = player.choose_move(self.state, possible_moves)
@@ -43,7 +49,7 @@ class Checkers:
                 self.update_state(player, move)
                 
                 self.winner = self.check_for_winner()
-                if self.winner: break
+                if self.winner: return
         
             self.player_turn += 1
 
@@ -63,7 +69,7 @@ class Checkers:
 
                 # check if there is a piece on the current coord
 
-                if abs(current_piece) == player.player_num:
+                if abs(current_piece) == player.player_number:
 
                     # get moves that the piece might be able to do
 
@@ -87,7 +93,7 @@ class Checkers:
                     
                         # check if the opponent is in the new spot
 
-                        elif abs(new_piece) == 3 - player.player_num:
+                        elif abs(new_piece) == 3 - player.player_number:
                             
                             # if so, and if the next next spot is empty, add that spot to moves_to_check
 
@@ -140,8 +146,8 @@ class Checkers:
         
         # turn pieces into kings
 
-        p1_piece_should_be_king = (player.player_num == 1 and new_coords[0] == 0 and self.state[new_coords[0]][new_coords[1]] > 0)
-        p2_piece_should_be_king = (player.player_num == 2 and new_coords[0] == 7 and self.state[new_coords[0]][new_coords[1]] > 0)
+        p1_piece_should_be_king = (player.player_number == 1 and new_coords[0] == 0 and self.state[new_coords[0]][new_coords[1]] > 0)
+        p2_piece_should_be_king = (player.player_number == 2 and new_coords[0] == 7 and self.state[new_coords[0]][new_coords[1]] > 0)
 
         if p1_piece_should_be_king or p2_piece_should_be_king:
             self.state[new_coords[0]][new_coords[1]] *= -1
@@ -156,7 +162,7 @@ class Checkers:
 
         if p1_count == 0: return 2
         if p2_count == 0: return 1
-        if p1_count == 1 and p2_count == 1: return 'tie'
+        if p1_count == 1 and p2_count == 1: return "tie"
 
         return None
 

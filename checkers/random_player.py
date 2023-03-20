@@ -5,21 +5,21 @@ from global_functions import *
 class RandomPlayer:
 
     def __init__(self, print_data=False):
-        self.player_num = None
+        self.player_number = None
         self.print_data = print_data
  
-    def set_player_num(self, n):
-        self.player_num = n
+    def set_player_number(self, n):
+        self.player_number = n
 
     def choose_move(self, state, moves):
 
         if (self.print_data):
-            print(f'\nPlayer {self.player_num}\'s turn!')
+            print(f'\nPlayer {self.player_number}\'s turn!')
             print_state(state)
 
         move = random.choice(moves)
 
         if (self.print_data):
-            print(f'\nPlayer {self.player_num}\'s move: {print_move(move)}\n\n-----------------------------------------------------------------')
+            print(f'\nPlayer {self.player_number}\'s move: {print_move(move)}\n\n-----------------------------------------------------------------')
 
         return move
