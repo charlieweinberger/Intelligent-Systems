@@ -1,11 +1,14 @@
 from checkers import *
 from random_player import *
 from input_player import *
+from intelligent_player import *
 
 # EDIT THIS
 
-game_mode = 'input' # random, input, custom
-num_random_games = 1000
+# combine the 4 if statements into 1 code segment
+
+game_mode = 'intelligent' # random, input, intelligent, custom
+num_random_games = 100
 print_data_for_random = False
 
 # DON'T EDIT THIS
@@ -36,6 +39,20 @@ elif game_mode == 'input': # input players
         print("\nTie game!\n")
     else:
         print(f'\nWinner: Player {game.winner}!\n')
+
+elif game_mode == 'intelligent': # intelligent player
+
+    print(f"\nRunning {num_random_games} game{'s' if num_random_games != 1 else ''} of intelligent vs. random player...\n")
+
+    score = { 1: 0, 2: 0, 'tie': 0 }
+
+    for i in range(num_random_games):
+        players = [IntelligentPlayer(print_data_for_random), RandomPlayer(print_data_for_random)]
+        game = Checkers(players)
+        game.run_to_completion()
+        score[game.winner] += 1
+
+    print(f"{score = }")
 
 elif game_mode == 'custom': # custom game state
 

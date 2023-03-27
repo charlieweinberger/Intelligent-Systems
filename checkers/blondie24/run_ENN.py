@@ -2,7 +2,7 @@ import random, copy
 from checkers import *
 from NN_player import *
 
-# should be all done (aka updated for blondie24), but check "Converting Output to Action" section ot be sure
+# should be all done (aka updated for blondie24), but check "Converting Output to Action" section to be sure
 
 class RunENN():
 

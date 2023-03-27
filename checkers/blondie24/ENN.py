@@ -145,7 +145,7 @@ class Blondie24ENN():
         new_net.counter = int(self.counter)
 
         for key in new_net.weights:
-            new_net.weights[key] += N(0, 0.05) # mutation rate
+            new_net.weights[key] += N(0, 0.05) # mutation rate?
         
         new_net.K = self.K * math.exp(N(0, 1) / math.sqrt(2))
 

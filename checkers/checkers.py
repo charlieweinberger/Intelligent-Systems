@@ -29,8 +29,6 @@ class Checkers:
 
         while self.winner == None:
 
-            print(f"{self.player_turn = }")
-
             if self.player_turn > 100:
                 self.winner = "tie"
                 return

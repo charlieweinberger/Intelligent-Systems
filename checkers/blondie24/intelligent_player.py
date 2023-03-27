@@ -1,1 +1,0 @@
-# Develop a heuristic checkers player by hand that plays slightly intelligently. It should capitalize on obvious opportunities to move its pieces forward and jump opponent pieces, but it should not attempt to plan into the future.

@@ -1,6 +1,6 @@
 def print_state(state):
 
-    print("\n   0 1 2 3 4 5 6 7")
+    print("   0 1 2 3 4 5 6 7")
 
     for i in range(8):
 
@@ -28,8 +28,16 @@ def print_move(move):
     current_coord, translation, captured_coords = move
     to_print = f'{current_coord} -> {translate(current_coord, translation)}'
 
-    if captured_coords != []:
-        to_print += f' (coords captured: {captured_coords})'
+    if len(captured_coords) == 1:
+        to_print += f' (coords captured: {captured_coords[0]})'
+    elif len(captured_coords) > 1:
+        
+        to_print += f' (coords captured: '
+        
+        for i in range(len(captured_coords) - 2):
+            to_print += f'{captured_coords[i]}, '
+
+        to_print += f'{captured_coords[-2]} and {captured_coords[-1]})'
 
     return to_print
 
