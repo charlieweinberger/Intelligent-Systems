@@ -5,7 +5,7 @@ from run_ENN import *
 num_players = 15
 num_gens = 50
 
-weight_range = 0.2 # not being used rn
+weight_range = 0.2 # used in ENN.py
 mutation_rate = 0.05 # not being used rn
 K = 2 # not being used rn
 

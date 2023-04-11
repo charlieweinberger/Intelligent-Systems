@@ -69,7 +69,7 @@ class Blondie24ENN():
 
     def get_random_weight(self):
         
-        # see run.py to define weight_range
+        weight_range = 0.2 # from run.py
 
         num_decimals = 3
         power_of_10 = 10 ** num_decimals

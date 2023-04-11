@@ -1,12 +1,13 @@
-import random, copy
+import random, copy, sys
+sys.path.append("/workspace/Intelligent-Systems/checkers")
 from checkers import *
-from NN_player import *
+from neural_net_player import *
 
 # should be all done (aka updated for blondie24), but check "Converting Output to Action" section to be sure
 
 class RunENN():
 
-    def __init__(self, num_players, num_games):
+    def __init__(self, num_players):
         
         self.num_players = num_players
         self.num_games = 5
