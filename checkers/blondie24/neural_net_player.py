@@ -39,7 +39,8 @@ class NeuralNetPlayer():
         
         https://www.justinmath.com/reimplementing-blondie24/
         https://www.justinmath.com/reduced-search-depth-and-heuristic-evaluation-for-connect-four/
-        
+        https://github.com/charliebrown364/Intelligent-Systems/tree/old-checkers-implementation/checkers
+                
         An action is chosen via the minimax algorithm using the above heuristic evaluation function. As the network learns, this heuristic evaluation function will become more accurate.
 
         - If a board state is a win or a loss, return 1 or -1, respectively.
@@ -48,6 +49,14 @@ class NeuralNetPlayer():
         The search depth is set to d = 4 to allow for reasonable execution times.
         
         """
+
+        # Code goes here
+
+
+        
+        """
+
+        # TO BE DELETED
 
         outputs = self.net.input_array(flattened_state)
         out_vals = list(outputs)
@@ -62,6 +71,7 @@ class NeuralNetPlayer():
 
         return (math.floor(max_index / 3), max_index % 3)
 
+        """
     
     def initialize_net(self):
         self.net.initialize()

@@ -3,8 +3,6 @@ sys.path.append("/workspace/Intelligent-Systems/checkers")
 from checkers import *
 from neural_net_player import *
 
-# should be all done (aka updated for blondie24), but check "Converting Output to Action" section to be sure
-
 class RunENN():
 
     def __init__(self, num_players):
